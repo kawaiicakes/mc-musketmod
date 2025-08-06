@@ -1,5 +1,7 @@
 package ewewukek.musketmod;
 
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +32,10 @@ import net.minecraft.world.scores.Score;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 public abstract class GunItem extends Item {
+    public static final int DEFAULT_SWAP_COOLDOWN = 50;
     // for RenderHelper
     public static ItemStack activeMainHandStack;
     public static ItemStack activeOffhandStack;
@@ -328,6 +333,37 @@ public abstract class GunItem extends Item {
             }
             setLoadingStage(stack, loadingStage);
         }
+    }
+
+    @Override
+    @ParametersAreNonnullByDefault
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isActive) {
+        super.inventoryTick(stack, level, entity, slot, isActive);
+        if (!(entity instanceof ServerPlayer player)) return;
+
+        boolean isHolstered = this.isHolstered(isActive, player, stack);
+
+        stack.getOrCreateTag().putBoolean("holstered", isHolstered);
+
+        if (isHolstered) {
+            stack.getOrCreateTag().putBoolean("drawing", false);
+            return;
+        }
+
+        if (!stack.getOrCreateTag().contains("drawing") || !stack.getOrCreateTag().getBoolean("drawing")) {
+            this.applySwapCooldown(player, stack);
+            stack.getOrCreateTag().putBoolean("drawing", true);
+        }
+    }
+
+    public void applySwapCooldown(ServerPlayer player, ItemStack stack) {
+        player.getCooldowns().addCooldown(this, this.getUnholsterTicks(player, stack));
+    }
+
+    public abstract int getUnholsterTicks(ServerPlayer player, ItemStack stack);
+
+    public boolean isHolstered(boolean inMainHand, ServerPlayer player, ItemStack stack) {
+        return !inMainHand;
     }
 
     @Override

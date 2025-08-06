@@ -1,5 +1,6 @@
 package ewewukek.musketmod;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 
@@ -21,6 +22,11 @@ public class BlunderbussItem extends GunItem {
     @Override
     public int pelletCount() {
         return Config.blunderbussPelletCount;
+    }
+
+    @Override
+    public int getUnholsterTicks(ServerPlayer player, ItemStack stack) {
+        return DEFAULT_SWAP_COOLDOWN;
     }
 
     @Override

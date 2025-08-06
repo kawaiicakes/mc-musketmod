@@ -1,5 +1,6 @@
 package ewewukek.musketmod;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 
@@ -31,5 +32,11 @@ public class PistolItem extends GunItem {
     @Override
     public boolean twoHanded() {
         return false;
+    }
+
+    @Override
+    public int getUnholsterTicks(ServerPlayer player, ItemStack stack) {
+        // TODO - Duel-wielding considerations
+        return DEFAULT_SWAP_COOLDOWN;
     }
 }

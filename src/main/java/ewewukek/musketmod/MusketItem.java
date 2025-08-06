@@ -3,6 +3,7 @@ package ewewukek.musketmod;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -46,6 +47,11 @@ public class MusketItem extends GunItem {
     @Override
     public SoundEvent fireSound(ItemStack stack) {
         return Sounds.MUSKET_FIRE;
+    }
+
+    @Override
+    public int getUnholsterTicks(ServerPlayer player, ItemStack stack) {
+        return DEFAULT_SWAP_COOLDOWN;
     }
 
     @Override
