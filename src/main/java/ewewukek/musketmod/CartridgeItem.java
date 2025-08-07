@@ -32,7 +32,6 @@ public class CartridgeItem extends Item {
             Position position = DispenserBlock.getDispensePosition(blockSource);
             Vec3 origin = new Vec3(position.x(), position.y(), position.z());
 
-            // TODO - bleh
             direction = GunItem.addSpread(direction, level.getRandom(), Config.dispenserBulletStdDev);
 
             BulletEntity bullet = new BulletEntity(level);
