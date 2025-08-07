@@ -11,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class CartridgeItem extends Item {
     public CartridgeItem(Properties properties) {
@@ -20,7 +21,7 @@ public class CartridgeItem extends Item {
 
     public static final DispenseItemBehavior DISPENSE_ITEM_BEHAVIOR = new DefaultDispenseItemBehavior() {
         @Override
-        public ItemStack execute(BlockSource blockSource, ItemStack stack) {
+        public @NotNull ItemStack execute(BlockSource blockSource, ItemStack stack) {
             ServerLevel level = blockSource.getLevel();
 
             Direction blockDirection = blockSource.getBlockState().getValue(DispenserBlock.FACING);
@@ -30,6 +31,8 @@ public class CartridgeItem extends Item {
 
             Position position = DispenserBlock.getDispensePosition(blockSource);
             Vec3 origin = new Vec3(position.x(), position.y(), position.z());
+
+            // TODO - bleh
             direction = GunItem.addSpread(direction, level.getRandom(), Config.dispenserBulletStdDev);
 
             BulletEntity bullet = new BulletEntity(level);
@@ -40,7 +43,7 @@ public class CartridgeItem extends Item {
             level.addFreshEntity(bullet);
 
             level.playSound(null, origin.x(), origin.y(), origin.z(), Sounds.DISPENSER_FIRE, SoundSource.BLOCKS, 2.5f, 1);
-            MusketMod.sendSmokeEffect(level, origin, direction);
+            MusketMod.sendSmokeEffect(level, origin, direction, true);
 
             stack.shrink(1);
             return stack;

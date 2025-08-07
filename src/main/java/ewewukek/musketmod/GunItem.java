@@ -464,7 +464,8 @@ public abstract class GunItem extends Item {
             level.addFreshEntity(bullet);
         }
 
-        MusketMod.sendSmokeEffect((ServerLevel)level, origin.add(smokeOffset), direction);
+        // FIXME - direction/velocity fix
+        MusketMod.sendSmokeEffect((ServerLevel)level, origin.add(smokeOffset), direction, this.twoHanded());
     }
 
     public static void fireParticles(Level level, Vec3 origin, Vec3 direction) {
@@ -475,7 +476,7 @@ public abstract class GunItem extends Item {
             Vec3 p = origin.add(direction.scale(1.25 + t));
             p = p.add(new Vec3(random.nextFloat() - 0.5, random.nextFloat() - 0.5, random.nextFloat() - 0.5).scale(0.1));
             Vec3 v = direction.scale(0.1 * (1 - t));
-            level.addParticle(ParticleTypes.POOF, p.x, p.y, p.z, v.x, v.y, v.z);
+            level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, p.x, p.y, p.z, v.x, v.y, v.z);
         }
     }
 

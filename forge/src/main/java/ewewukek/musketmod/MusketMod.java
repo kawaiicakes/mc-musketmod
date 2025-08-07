@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Supplier;
 
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -80,6 +81,16 @@ public class MusketMod {
         });
         event.register(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS,
             resource("loot_modifier"), () -> ModLootModifier.CODEC);
+        event.register(
+                ForgeRegistries.Keys.PARTICLE_TYPES,
+                resource("gunfire_smoke_large"),
+                () -> new SimpleParticleType(true)
+        );
+        event.register(
+                ForgeRegistries.Keys.PARTICLE_TYPES,
+                resource("gunfire_smoke_small"),
+                () -> new SimpleParticleType(true)
+        );
     }
 
     public void creativeTabs(final BuildCreativeModeTabContentsEvent event) {
@@ -112,26 +123,29 @@ public class MusketMod {
         builder.setShouldReceiveVelocityUpdates(false);
     }
 
-    public static void sendSmokeEffect(ServerLevel level, Vec3 origin, Vec3 direction) {
+    public static void sendSmokeEffect(ServerLevel level, Vec3 origin, Vec3 direction, boolean largeSmoke) {
         PacketDistributor.TargetPoint point = new PacketDistributor.TargetPoint(
             origin.x, origin.y, origin.z,
             64.0, level.dimension());
         NETWORK_CHANNEL.send(PacketDistributor.NEAR.with(() -> point),
-            new SmokeEffectPacket(origin, direction));
+            new SmokeEffectPacket(origin, direction, largeSmoke));
     }
 
     public static class SmokeEffectPacket {
         public final Vec3 origin;
         public final Vec3 direction;
+        public final boolean largeSmoke;
 
-        public SmokeEffectPacket(Vec3 origin, Vec3 direction) {
+        public SmokeEffectPacket(Vec3 origin, Vec3 direction, boolean largeSmoke) {
             this.origin = origin;
             this.direction = direction;
+            this.largeSmoke = largeSmoke;
         }
 
         public SmokeEffectPacket(FriendlyByteBuf buf) {
-            origin = new Vec3(buf.readFloat(), buf.readFloat(), buf.readFloat());
-            direction = new Vec3(buf.readFloat(), buf.readFloat(), buf.readFloat());
+            this.origin = new Vec3(buf.readFloat(), buf.readFloat(), buf.readFloat());
+            this.direction = new Vec3(buf.readFloat(), buf.readFloat(), buf.readFloat());
+            this.largeSmoke = buf.readBoolean();
         }
 
         public void encode(FriendlyByteBuf buf) {
@@ -141,6 +155,7 @@ public class MusketMod {
             buf.writeFloat((float)direction.x);
             buf.writeFloat((float)direction.y);
             buf.writeFloat((float)direction.z);
+            buf.writeBoolean(this.largeSmoke);
         }
 
         public void handle(Supplier<NetworkEvent.Context> ctx) {
