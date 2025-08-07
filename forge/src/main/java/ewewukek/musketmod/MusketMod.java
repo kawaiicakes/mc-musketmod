@@ -34,6 +34,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
+import net.minecraftforge.registries.RegistryObject;
 
 @Mod(MusketMod.MODID)
 public class MusketMod {
@@ -42,6 +43,10 @@ public class MusketMod {
 
     public static ResourceLocation resource(String path) {
         return new ResourceLocation(MODID, path);
+    }
+
+    public static SimpleParticleType getParticleFromId(String id) {
+        return (SimpleParticleType) RegistryObject.create(MusketMod.resource(id), ForgeRegistries.PARTICLE_TYPES).orElseThrow(IllegalStateException::new);
     }
 
     public static final String PROTOCOL_VERSION = "1";

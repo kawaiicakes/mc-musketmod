@@ -34,6 +34,8 @@ import net.minecraft.world.scores.criteria.ObjectiveCriteria;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
+import static ewewukek.musketmod.MusketMod.getParticleFromId;
+
 public abstract class GunItem extends Item {
     public static final int DEFAULT_SWAP_COOLDOWN = 50;
     // for RenderHelper
@@ -464,11 +466,15 @@ public abstract class GunItem extends Item {
             level.addFreshEntity(bullet);
         }
 
-        // FIXME - direction/velocity fix
-        MusketMod.sendSmokeEffect((ServerLevel)level, origin.add(smokeOffset), direction, this.twoHanded());
+        MusketMod.sendSmokeEffect(
+                (ServerLevel)level,
+                origin.add(smokeOffset),
+                direction,
+                this.twoHanded()
+        );
     }
 
-    public static void fireParticles(Level level, Vec3 origin, Vec3 direction) {
+    public static void fireParticles(Level level, Vec3 origin, Vec3 direction, boolean largeSmoke) {
         RandomSource random = RandomSource.create();
 
         for (int i = 0; i < 10; i++) {
@@ -476,7 +482,11 @@ public abstract class GunItem extends Item {
             Vec3 p = origin.add(direction.scale(1.25 + t));
             p = p.add(new Vec3(random.nextFloat() - 0.5, random.nextFloat() - 0.5, random.nextFloat() - 0.5).scale(0.1));
             Vec3 v = direction.scale(0.1 * (1 - t));
-            level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, p.x, p.y, p.z, v.x, v.y, v.z);
+
+            level.addAlwaysVisibleParticle(
+                    largeSmoke ? getParticleFromId("gunfire_smoke_large") : getParticleFromId("gunfire_smoke_small"),
+                    p.x, p.y, p.z, v.x, v.y, v.z
+            );
         }
     }
 
