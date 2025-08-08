@@ -15,36 +15,38 @@ import javax.annotation.ParametersAreNonnullByDefault;
 public class GunfireSmokeParticle extends TextureSheetParticle {
     private static final float SPREAD = 3700.0F;
     private static final float QUAD_GROWTH_FACTOR = 1004.0F;
-    private static final float INITIAL_SPEED = 14.0F;
+    private static final float INITIAL_SPEED_MUL = 14.0F;
     private static final double MIN_DRAG_SPEED = 0.001;
+    private static final float DEVIATION_FUDGE_FACTOR = 3.2E-5F;
+    private static final float SMOKE_SCALE = 6.0F;
 
     protected final float initialQuadSize;
+    protected final Vec3 initialVel;
 
     protected GunfireSmokeParticle(
             ClientLevel level,
             double posX, double posY, double posZ,
-            double vX, double vY, double vZ,
-            float scale, int lifetime
+            double vX, double vY, double vZ
     ) {
         super(level, posX, posY, posZ);
 
-        this.scale(scale);
+        this.scale(SMOKE_SCALE);
         this.initialQuadSize = this.quadSize;
-        this.setSize((2.5F / 3.0F) * scale, (2.5F / 3.0F) * scale);
-
-        this.lifetime = this.random.nextInt(80) + lifetime;
+        this.setSize((0.25F / 3.0F) * SMOKE_SCALE, (0.25F / 3.0F) * SMOKE_SCALE);
 
         this.gravity = 1.3E-5F;
 
-        // initial velocity is merely setting the direction of the smoke.
+        // The velocity passed into this constructor is NOT normalized (its length being under 1).
+        // It's saved to retrieve the initial speed later, as well as the path to deviate from when applying drag.
+        this.initialVel = new Vec3(vX, vY, vZ);
+
+        // initial velocity is merely setting the direction of the smoke; the final magnitude of the velocity is not
+        // applied until later.
         this.xd = vX;
         this.yd = vY;
         this.zd = vZ;
     }
 
-    /**
-     * Oh my God, this is nesting hell.... Welp. Quick and dirty makes it to release, I guess.
-     */
     @Override
     public void tick() {
         this.xo = this.x;
@@ -52,46 +54,47 @@ public class GunfireSmokeParticle extends TextureSheetParticle {
         this.zo = this.z;
 
         if (this.age == 0) {
-            this.xd *= INITIAL_SPEED;
-            this.yd *= INITIAL_SPEED;
-            this.zd *= INITIAL_SPEED;
+            Vec3 vel = this.initialVel.add(
+                    this.random.nextIntBetweenInclusive(-100, 100) * DEVIATION_FUDGE_FACTOR,
+                    this.random.nextIntBetweenInclusive(-100, 100) * DEVIATION_FUDGE_FACTOR,
+                    this.random.nextIntBetweenInclusive(-100, 100) * DEVIATION_FUDGE_FACTOR
+            ).normalize().scale(this.initialVel.length());
 
-            // TODO - add more initial spread here
+            this.xd = vel.x * INITIAL_SPEED_MUL;
+            this.yd = vel.y * INITIAL_SPEED_MUL;
+            this.zd = vel.z * INITIAL_SPEED_MUL;
         }
 
         this.quadSize *= (this.quadSize / QUAD_GROWTH_FACTOR) + 1.0F;
 
-        if (this.age++ < this.lifetime && !(this.alpha <= 0.0F)) {
-            Vec3 vel = new Vec3(this.xd, this.yd, this.zd);
-            if (vel.lengthSqr() >= MIN_DRAG_SPEED) {
-                // TODO - exacerbate random spread here; smoke should curve along a line as it slows
-                double scale = Mth.lerp(0.75, 0.0, vel.length());
-                vel = vel.normalize().scale(scale);
+        this.age++;
 
-                this.xd = vel.x;
-                this.yd = vel.y;
-                this.zd = vel.z;
-            } else {
-                // Brownian motion simulation lol
-                this.xd += this.random.nextFloat() / SPREAD * (float)(this.random.nextBoolean() ? 1 : -1);
-                this.zd += this.random.nextFloat() / SPREAD * (float)(this.random.nextBoolean() ? 1 : -1);
-            }
-
-            this.yd += this.gravity;
-
-            this.move(this.xd, this.yd, this.zd);
-
-            // TODO - I'm not a fan of this. Perhaps alpha should change as a function of the quad size
-            if (this.age >= this.lifetime - 60) {
-                if (this.alpha > 0.01F) {
-                    this.alpha -= 0.010F;
-                }
-            } else {
-                this.alpha -= 1.0E-6F;
-            }
-        } else {
+        if (this.alpha <= 0) {
             this.remove();
+            return;
         }
+
+        Vec3 vel = new Vec3(this.xd, this.yd, this.zd);
+
+        if (vel.lengthSqr() >= MIN_DRAG_SPEED) {
+            // TODO - exacerbate random spread here; smoke should curve along a line as it slows
+            double scale = Mth.lerp(0.75, 0.0, vel.length());
+            vel = vel.normalize().scale(scale);
+
+            this.xd = vel.x;
+            this.yd = vel.y;
+            this.zd = vel.z;
+        } else {
+            // Brownian motion simulation lol
+            this.xd += this.random.nextFloat() / SPREAD * (float)(this.random.nextBoolean() ? 1 : -1);
+            this.zd += this.random.nextFloat() / SPREAD * (float)(this.random.nextBoolean() ? 1 : -1);
+        }
+
+        this.yd += this.gravity;
+
+        this.move(this.xd, this.yd, this.zd);
+
+        this.alpha = this.initialQuadSize / this.quadSize;
     }
 
     @Override
@@ -110,8 +113,8 @@ public class GunfireSmokeParticle extends TextureSheetParticle {
         @ParametersAreNonnullByDefault
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double posX, double posY, double posZ, double vX, double vY, double vZ) {
             GunfireSmokeParticle gunfireSmokeParticle = new GunfireSmokeParticle(
-                    level, posX, posY, posZ, vX, vY, vZ, 5.0F,
-                    600);
+                    level, posX, posY, posZ, vX, vY, vZ
+            );
 
             gunfireSmokeParticle.setAlpha(0.97F);
             gunfireSmokeParticle.pickSprite(this.sprites);
@@ -131,7 +134,7 @@ public class GunfireSmokeParticle extends TextureSheetParticle {
         @ParametersAreNonnullByDefault
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double posX, double posY, double posZ, double vX, double vY, double vZ) {
             GunfireSmokeParticle gunfireSmokeParticle = new GunfireSmokeParticle(
-                    level, posX, posY, posZ, vX, vY, vZ, 5.0F, 700);
+                    level, posX, posY, posZ, vX, vY, vZ);
 
             gunfireSmokeParticle.setAlpha(0.97F);
             gunfireSmokeParticle.pickSprite(this.sprites);

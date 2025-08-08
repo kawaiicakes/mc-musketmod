@@ -336,6 +336,7 @@ public abstract class GunItem extends Item {
         }
     }
 
+    // FIXME - putting the pistol into offhand does not trigger cooldown
     @Override
     @ParametersAreNonnullByDefault
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isActive) {
