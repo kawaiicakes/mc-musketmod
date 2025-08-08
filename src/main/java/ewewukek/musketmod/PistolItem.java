@@ -35,8 +35,12 @@ public class PistolItem extends GunItem {
     }
 
     @Override
+    public boolean isHolstered(boolean inMainHand, ServerPlayer player, ItemStack stack) {
+        return !inMainHand && !player.getOffhandItem().is(this);
+    }
+
+    @Override
     public int getUnholsterTicks(ServerPlayer player, ItemStack stack) {
-        // TODO - Duel-wielding considerations
-        return DEFAULT_SWAP_COOLDOWN;
+        return DEFAULT_SWAP_COOLDOWN / 2;
     }
 }
