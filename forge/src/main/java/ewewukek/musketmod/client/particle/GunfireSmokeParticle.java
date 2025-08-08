@@ -77,7 +77,6 @@ public class GunfireSmokeParticle extends TextureSheetParticle {
         Vec3 vel = new Vec3(this.xd, this.yd, this.zd);
 
         if (vel.lengthSqr() >= MIN_DRAG_SPEED) {
-            // TODO - exacerbate random spread here; smoke should curve along a line as it slows
             double scale = Mth.lerp(0.75, 0.0, vel.length());
             vel = vel.normalize().scale(scale);
 
