@@ -50,6 +50,16 @@ public class MusketItem extends GunItem {
     }
 
     @Override
+    public int getReloadStages() {
+        return Config.musketLoadingStages;
+    }
+
+    @Override
+    public float getReloadStageDuration() {
+        return Config.musketLoadingStageDuration;
+    }
+
+    @Override
     public int getUnholsterTicks(ServerPlayer player, ItemStack stack) {
         return DEFAULT_SWAP_COOLDOWN;
     }

@@ -42,4 +42,14 @@ public class BlunderbussItem extends GunItem {
             return Sounds.BLUNDERBUSS_FIRE;
         }
     }
+
+    @Override
+    public int getReloadStages() {
+        return Config.blunderbussLoadingStages;
+    }
+
+    @Override
+    public float getReloadStageDuration() {
+        return Config.blunderbussLoadingStageDuration;
+    }
 }

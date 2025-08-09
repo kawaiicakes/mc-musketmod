@@ -24,19 +24,49 @@ public class ClothConfigScreen {
             .build());
 
         commonCategory.addEntry(entryBuilder.startIntField(
-            Component.translatable("musketmod.options.loading_stages_number"), Config.loadingStages)
-            .setSaveConsumer(value -> Config.loadingStages = value)
+                        Component.translatable("musketmod.options.loading_stages_number.blunderbuss"), Config.blunderbussLoadingStages)
+                .setSaveConsumer(value -> Config.blunderbussLoadingStages = value)
+                .setMin(2)
+                .setDefaultValue(Config.DEFAULT_LOADING_STAGES)
+                .build());
+
+        commonCategory.addEntry(entryBuilder.startFloatField(
+                        Component.translatable("musketmod.options.loading_stage_duration.blunderbuss"), Config.blunderbussLoadingStageDuration)
+                .setTooltip(Component.translatable("musketmod.options.unit.seconds"))
+                .setSaveConsumer(value -> Config.blunderbussLoadingStageDuration = value)
+                .setMin(0.25f)
+                .setDefaultValue(Config.DEFAULT_LOADING_STAGE_DURATION)
+                .build());
+
+        commonCategory.addEntry(entryBuilder.startIntField(
+            Component.translatable("musketmod.options.loading_stages_number.musket"), Config.musketLoadingStages)
+            .setSaveConsumer(value -> Config.musketLoadingStages = value)
             .setMin(2)
-            .setDefaultValue(Config.LOADING_STAGES)
+            .setDefaultValue(Config.DEFAULT_LOADING_STAGES)
             .build());
 
         commonCategory.addEntry(entryBuilder.startFloatField(
-            Component.translatable("musketmod.options.loading_stage_duration"), Config.loadingStageDuration)
+            Component.translatable("musketmod.options.loading_stage_duration.musket"), Config.musketLoadingStageDuration)
             .setTooltip(Component.translatable("musketmod.options.unit.seconds"))
-            .setSaveConsumer(value -> Config.loadingStageDuration = value)
+            .setSaveConsumer(value -> Config.musketLoadingStageDuration = value)
             .setMin(0.25f)
-            .setDefaultValue(Config.LOADING_STAGE_DURATION)
+            .setDefaultValue(Config.DEFAULT_LOADING_STAGE_DURATION)
             .build());
+
+        commonCategory.addEntry(entryBuilder.startIntField(
+                        Component.translatable("musketmod.options.loading_stages_number.pistol"), Config.pistolLoadingStages)
+                .setSaveConsumer(value -> Config.pistolLoadingStages = value)
+                .setMin(2)
+                .setDefaultValue(Config.DEFAULT_LOADING_STAGES)
+                .build());
+
+        commonCategory.addEntry(entryBuilder.startFloatField(
+                        Component.translatable("musketmod.options.loading_stage_duration.pistol"), Config.pistolLoadingStageDuration)
+                .setTooltip(Component.translatable("musketmod.options.unit.seconds"))
+                .setSaveConsumer(value -> Config.pistolLoadingStageDuration = value)
+                .setMin(0.25f)
+                .setDefaultValue(Config.DEFAULT_LOADING_STAGE_DURATION)
+                .build());
 
         commonCategory.addEntry(entryBuilder.startFloatField(
             Component.translatable("musketmod.options.pvp_damage_multiplier"), Config.pvpDamageMultiplier)

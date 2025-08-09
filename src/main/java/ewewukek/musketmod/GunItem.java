@@ -143,9 +143,11 @@ public abstract class GunItem extends Item {
     }
 
     public static Pair<Integer, Integer> getLoadingDuration(ItemStack stack) {
+        if (!(stack.getItem() instanceof GunItem gun)) return Pair.of(0, 0);
+
         int level = getQuickChargeLevel(stack);
-        int stages = Config.loadingStages;
-        float total = stages * Config.loadingStageDuration;
+        int stages = gun.getReloadStages();
+        float total = stages * gun.getReloadStageDuration();
         float reduction = level * Config.reductionPerQuickChargeLevel;
         float duration = (total - reduction) / stages;
         if (duration < 0.25f) duration = 0.25f;
@@ -296,6 +298,10 @@ public abstract class GunItem extends Item {
         int loadingStagesRemaining = 1 + loadingStages - getLoadingStage(stack);
         return Math.max(0, loadingStagesRemaining) * ticksPerLoadingStage;
     }
+
+    public abstract int getReloadStages();
+
+    public abstract float getReloadStageDuration();
 
     public static boolean checkAmmo(Player player, ItemStack stack) {
         if (player.getAbilities().instabuild || hasInfinity(stack)) return true;

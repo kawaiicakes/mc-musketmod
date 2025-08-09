@@ -30,6 +30,16 @@ public class PistolItem extends GunItem {
     }
 
     @Override
+    public int getReloadStages() {
+        return Config.pistolLoadingStages;
+    }
+
+    @Override
+    public float getReloadStageDuration() {
+        return Config.pistolLoadingStageDuration;
+    }
+
+    @Override
     public boolean twoHanded() {
         return false;
     }

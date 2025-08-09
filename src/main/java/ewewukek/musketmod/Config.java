@@ -18,10 +18,17 @@ public class Config {
     public static float bulletMaxDistance;
     public static final float BULLET_MAX_DISTANCE = 256.0f;
 
-    public static int loadingStages;
-    public static final int LOADING_STAGES = 3;
-    public static float loadingStageDuration;
-    public static final float LOADING_STAGE_DURATION = 0.5f;
+    public static final int DEFAULT_LOADING_STAGES = 3;
+    public static final float DEFAULT_LOADING_STAGE_DURATION = 0.5f;
+
+    public static int blunderbussLoadingStages;
+    public static float blunderbussLoadingStageDuration;
+
+    public static int musketLoadingStages;
+    public static float musketLoadingStageDuration;
+
+    public static int pistolLoadingStages;
+    public static float pistolLoadingStageDuration;
 
     public static float pvpDamageMultiplier;
     public static final float PVP_DAMAGE_MULTIPLIER = 1.0f;
@@ -95,8 +102,14 @@ public class Config {
     public static void load() {
         bulletMaxDistance = BULLET_MAX_DISTANCE;
 
-        loadingStages = LOADING_STAGES;
-        loadingStageDuration = LOADING_STAGE_DURATION;
+        blunderbussLoadingStages = DEFAULT_LOADING_STAGES;
+        blunderbussLoadingStageDuration = DEFAULT_LOADING_STAGE_DURATION;
+
+        musketLoadingStages = DEFAULT_LOADING_STAGES;
+        musketLoadingStageDuration = DEFAULT_LOADING_STAGE_DURATION;
+
+        pistolLoadingStages = DEFAULT_LOADING_STAGES;
+        pistolLoadingStageDuration = DEFAULT_LOADING_STAGE_DURATION;
 
         pvpDamageMultiplier = PVP_DAMAGE_MULTIPLIER;
         mobDamageMultiplier = MOB_DAMAGE_MULTIPLIER;
@@ -173,11 +186,25 @@ public class Config {
                         bulletMaxDistance = value;
                         break;
 
-                    case "loadingStages":
-                        loadingStages = (int)value;
+                    case "blunderbussLoadingStages":
+                        blunderbussLoadingStages = (int)value;
                         break;
-                    case "loadingStageDuration":
-                        loadingStageDuration = value;
+                    case "blunderbussLoadingStageDuration":
+                        blunderbussLoadingStageDuration = value;
+                        break;
+
+                    case "musketLoadingStages":
+                        musketLoadingStages = (int)value;
+                        break;
+                    case "musketLoadingStageDuration":
+                        musketLoadingStageDuration = value;
+                        break;
+
+                    case "pistolLoadingStages":
+                        pistolLoadingStages = (int)value;
+                        break;
+                    case "pistolLoadingStageDuration":
+                        pistolLoadingStageDuration = value;
                         break;
 
                     case "pvpDamageMultiplier":
@@ -315,10 +342,20 @@ public class Config {
             writer.write("# Maximum bullet travel distance (in blocks)\n");
             writer.write("bulletMaxDistance = "+bulletMaxDistance+"\n");
             writer.write("\n");
-            writer.write("# Number of loading stages\n");
-            writer.write("loadingStages = "+loadingStages+"\n");
-            writer.write("# Loading stage duration (in seconds)\n");
-            writer.write("loadingStageDuration = "+loadingStageDuration+"\n");
+            writer.write("# Number of loading stages for blunderbuss\n");
+            writer.write("blunderbussLoadingStages = "+ blunderbussLoadingStages +"\n");
+            writer.write("# Loading stage duration (in seconds) for blunderbuss\n");
+            writer.write("blunderbussLoadingStageDuration = "+ blunderbussLoadingStageDuration +"\n");
+            writer.write("\n");
+            writer.write("# Number of loading stages for musket\n");
+            writer.write("musketLoadingStages = "+ musketLoadingStages +"\n");
+            writer.write("# Loading stage duration (in seconds) for musket\n");
+            writer.write("musketLoadingStageDuration = "+ musketLoadingStageDuration +"\n");
+            writer.write("\n");
+            writer.write("# Number of loading stages for pistol\n");
+            writer.write("pistolLoadingStages = "+ pistolLoadingStages +"\n");
+            writer.write("# Loading stage duration (in seconds) for pistol\n");
+            writer.write("pistolLoadingStageDuration = "+ pistolLoadingStageDuration +"\n");
             writer.write("\n");
             writer.write("# Damage multiplier for pvp\n");
             writer.write("pvpDamageMultiplier = "+pvpDamageMultiplier+"\n");
