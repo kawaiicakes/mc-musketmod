@@ -30,7 +30,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v2
 
       - name: build
-        run: ./gradlew build
+        run: ./forge/gradlew build -p ./forge/
 
       - name: capture build artifacts
         uses: actions/upload-artifact@v4
