@@ -30,6 +30,15 @@ public class Config {
     public static int pistolLoadingStages;
     public static float pistolLoadingStageDuration;
 
+    public static final float DEFAULT_BLUNDERBUSS_SWAP_COOLDOWN = 2.5F;
+    public static float blunderbussSwapCooldown;
+
+    public static final float DEFAULT_MUSKET_SWAP_COOLDOWN = 2.5F;
+    public static float musketSwapCooldown;
+
+    public static final float DEFAULT_PISTOL_SWAP_COOLDOWN = 0.9F;
+    public static float pistolSwapCooldown;
+
     public static float pvpDamageMultiplier;
     public static final float PVP_DAMAGE_MULTIPLIER = 1.0f;
     public static float mobDamageMultiplier;
@@ -101,6 +110,12 @@ public class Config {
 
     public static void load() {
         bulletMaxDistance = BULLET_MAX_DISTANCE;
+
+        blunderbussSwapCooldown = DEFAULT_BLUNDERBUSS_SWAP_COOLDOWN;
+
+        musketSwapCooldown = DEFAULT_MUSKET_SWAP_COOLDOWN;
+
+        pistolSwapCooldown = DEFAULT_PISTOL_SWAP_COOLDOWN;
 
         blunderbussLoadingStages = DEFAULT_LOADING_STAGES;
         blunderbussLoadingStageDuration = DEFAULT_LOADING_STAGE_DURATION;
@@ -184,6 +199,18 @@ public class Config {
 
                     case "bulletMaxDistance":
                         bulletMaxDistance = value;
+                        break;
+
+                    case "blunderbussSwapCooldown":
+                        blunderbussSwapCooldown = value;
+                        break;
+
+                    case "musketSwapCooldown":
+                        musketSwapCooldown = value;
+                        break;
+
+                    case "pistolSwapCooldown":
+                        pistolSwapCooldown = value;
                         break;
 
                     case "blunderbussLoadingStages":
@@ -341,6 +368,13 @@ public class Config {
 
             writer.write("# Maximum bullet travel distance (in blocks)\n");
             writer.write("bulletMaxDistance = "+bulletMaxDistance+"\n");
+            writer.write("\n");
+            writer.write("# Swap cooldown (in seconds) for blunderbuss\n");
+            writer.write("blunderbussSwapCooldown = "+blunderbussSwapCooldown+"\n");
+            writer.write("# Swap cooldown (in seconds) for musket\n");
+            writer.write("musketSwapCooldown = "+musketSwapCooldown+"\n");
+            writer.write("# Swap cooldown (in seconds) for pistol\n");
+            writer.write("pistolSwapCooldown = "+pistolSwapCooldown+"\n");
             writer.write("\n");
             writer.write("# Number of loading stages for blunderbuss\n");
             writer.write("blunderbussLoadingStages = "+ blunderbussLoadingStages +"\n");

@@ -61,7 +61,7 @@ public class MusketItem extends GunItem {
 
     @Override
     public int getUnholsterTicks(ServerPlayer player, ItemStack stack) {
-        return DEFAULT_SWAP_COOLDOWN;
+        return (int) (Config.musketSwapCooldown * 20);
     }
 
     @Override

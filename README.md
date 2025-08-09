@@ -5,7 +5,7 @@ Fork of ewewuwek's musket mod for the whitelisted medieval-RP community Vassal.
 ### Changes
 - Big puff of smoke when firing ✔
 - Gun swapping cooldown ✔
-  - With config
+  - With config ✔
 - diff reload speed/stage configs per gun ✔
 <br><br>
 - Reload minigames that are different based on which stage of reloading you are on

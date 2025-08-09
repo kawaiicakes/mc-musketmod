@@ -23,6 +23,27 @@ public class ClothConfigScreen {
             .setDefaultValue(Config.BULLET_MAX_DISTANCE)
             .build());
 
+        commonCategory.addEntry(entryBuilder.startFloatField(
+                        Component.translatable("musketmod.options.swap_cooldown.blunderbuss"), Config.blunderbussSwapCooldown)
+                .setSaveConsumer(value -> Config.blunderbussSwapCooldown = value)
+                .setMin(0.0F)
+                .setDefaultValue(Config.DEFAULT_BLUNDERBUSS_SWAP_COOLDOWN)
+                .build());
+
+        commonCategory.addEntry(entryBuilder.startFloatField(
+                        Component.translatable("musketmod.options.swap_cooldown.musket"), Config.musketSwapCooldown)
+                .setSaveConsumer(value -> Config.musketSwapCooldown = value)
+                .setMin(0.0F)
+                .setDefaultValue(Config.DEFAULT_MUSKET_SWAP_COOLDOWN)
+                .build());
+
+        commonCategory.addEntry(entryBuilder.startFloatField(
+                        Component.translatable("musketmod.options.swap_cooldown.pistol"), Config.pistolSwapCooldown)
+                .setSaveConsumer(value -> Config.pistolSwapCooldown = value)
+                .setMin(0.0F)
+                .setDefaultValue(Config.DEFAULT_PISTOL_SWAP_COOLDOWN)
+                .build());
+
         commonCategory.addEntry(entryBuilder.startIntField(
                         Component.translatable("musketmod.options.loading_stages_number.blunderbuss"), Config.blunderbussLoadingStages)
                 .setSaveConsumer(value -> Config.blunderbussLoadingStages = value)

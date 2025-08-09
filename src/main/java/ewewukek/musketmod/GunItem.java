@@ -36,7 +36,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import static ewewukek.musketmod.MusketMod.getParticleFromId;
 
 public abstract class GunItem extends Item {
-    public static final int DEFAULT_SWAP_COOLDOWN = 50;
     // for RenderHelper
     public static ItemStack activeMainHandStack;
     public static ItemStack activeOffhandStack;

@@ -26,7 +26,7 @@ public class BlunderbussItem extends GunItem {
 
     @Override
     public int getUnholsterTicks(ServerPlayer player, ItemStack stack) {
-        return DEFAULT_SWAP_COOLDOWN;
+        return (int) (Config.blunderbussSwapCooldown * 20);
     }
 
     @Override
