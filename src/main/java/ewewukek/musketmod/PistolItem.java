@@ -50,6 +50,11 @@ public class PistolItem extends GunItem {
     }
 
     @Override
+    public float weight() {
+        return Config.pistolWeight;
+    }
+
+    @Override
     public int getUnholsterTicks(ServerPlayer player, ItemStack stack) {
         return (int) (Config.pistolSwapCooldown * 20);
     }

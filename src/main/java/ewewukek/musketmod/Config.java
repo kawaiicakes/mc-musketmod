@@ -21,6 +21,14 @@ public class Config {
     public static final int DEFAULT_LOADING_STAGES = 3;
     public static final float DEFAULT_LOADING_STAGE_DURATION = 0.5f;
 
+    public static float blunderbussWeight;
+
+    public static float musketWeight;
+    public static final float DEFAULT_MUSKET_WEIGHT = 4.0F;
+
+    public static float pistolWeight;
+    public static final float DEFAULT_PISTOL_WEIGHT = 2.0F;
+
     public static int blunderbussLoadingStages;
     public static float blunderbussLoadingStageDuration;
 
@@ -111,6 +119,12 @@ public class Config {
     public static void load() {
         bulletMaxDistance = BULLET_MAX_DISTANCE;
 
+        blunderbussWeight = DEFAULT_MUSKET_WEIGHT;
+
+        musketWeight = DEFAULT_MUSKET_WEIGHT;
+
+        pistolWeight = DEFAULT_PISTOL_WEIGHT;
+
         blunderbussSwapCooldown = DEFAULT_BLUNDERBUSS_SWAP_COOLDOWN;
 
         musketSwapCooldown = DEFAULT_MUSKET_SWAP_COOLDOWN;
@@ -199,6 +213,18 @@ public class Config {
 
                     case "bulletMaxDistance":
                         bulletMaxDistance = value;
+                        break;
+
+                    case "blunderbussWeight":
+                        blunderbussWeight = value;
+                        break;
+
+                    case "musketWeight":
+                        musketWeight = value;
+                        break;
+
+                    case "pistolWeight":
+                        pistolWeight = value;
                         break;
 
                     case "blunderbussSwapCooldown":
@@ -368,6 +394,13 @@ public class Config {
 
             writer.write("# Maximum bullet travel distance (in blocks)\n");
             writer.write("bulletMaxDistance = "+bulletMaxDistance+"\n");
+            writer.write("\n");
+            writer.write("# Weight for blunderbuss\n");
+            writer.write("blunderbussWeight = "+blunderbussWeight+"\n");
+            writer.write("# Weight for musket\n");
+            writer.write("musketWeight = "+musketWeight+"\n");
+            writer.write("# Weight for pistol\n");
+            writer.write("pistolWeight = "+pistolWeight+"\n");
             writer.write("\n");
             writer.write("# Swap cooldown (in seconds) for blunderbuss\n");
             writer.write("blunderbussSwapCooldown = "+blunderbussSwapCooldown+"\n");

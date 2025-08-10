@@ -60,6 +60,11 @@ public class MusketItem extends GunItem {
     }
 
     @Override
+    public float weight() {
+        return Config.musketWeight;
+    }
+
+    @Override
     public int getUnholsterTicks(ServerPlayer player, ItemStack stack) {
         return (int) (Config.musketSwapCooldown * 20);
     }

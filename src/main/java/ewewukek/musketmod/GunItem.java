@@ -341,6 +341,8 @@ public abstract class GunItem extends Item {
         }
     }
 
+    public abstract float weight();
+
     @Override
     @ParametersAreNonnullByDefault
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isActive) {

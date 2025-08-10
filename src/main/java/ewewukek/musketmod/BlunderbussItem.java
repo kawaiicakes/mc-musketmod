@@ -44,6 +44,11 @@ public class BlunderbussItem extends GunItem {
     }
 
     @Override
+    public float weight() {
+        return Config.blunderbussWeight;
+    }
+
+    @Override
     public int getReloadStages() {
         return Config.blunderbussLoadingStages;
     }

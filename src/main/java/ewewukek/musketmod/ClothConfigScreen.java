@@ -24,6 +24,30 @@ public class ClothConfigScreen {
             .build());
 
         commonCategory.addEntry(entryBuilder.startFloatField(
+                        Component.translatable("musketmod.options.weight.blunderbuss"), Config.blunderbussWeight)
+                .setSaveConsumer(value -> Config.blunderbussWeight = value)
+                .setMin(0.0F)
+                .setMax(10.0F)
+                .setDefaultValue(Config.DEFAULT_MUSKET_WEIGHT)
+                .build());
+
+        commonCategory.addEntry(entryBuilder.startFloatField(
+                        Component.translatable("musketmod.options.weight.musket"), Config.musketWeight)
+                .setSaveConsumer(value -> Config.musketWeight = value)
+                .setMin(0.0F)
+                .setMax(10.0F)
+                .setDefaultValue(Config.DEFAULT_MUSKET_WEIGHT)
+                .build());
+
+        commonCategory.addEntry(entryBuilder.startFloatField(
+                        Component.translatable("musketmod.options.weight.pistol"), Config.pistolWeight)
+                .setSaveConsumer(value -> Config.pistolWeight = value)
+                .setMin(0.0F)
+                .setMax(10.0F)
+                .setDefaultValue(Config.DEFAULT_PISTOL_WEIGHT)
+                .build());
+
+        commonCategory.addEntry(entryBuilder.startFloatField(
                         Component.translatable("musketmod.options.swap_cooldown.blunderbuss"), Config.blunderbussSwapCooldown)
                 .setSaveConsumer(value -> Config.blunderbussSwapCooldown = value)
                 .setMin(0.0F)
