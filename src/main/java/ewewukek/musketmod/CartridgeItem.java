@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class CartridgeItem extends Item {
     public CartridgeItem(Properties properties) {
-        super(properties);
+        super(properties.stacksTo(8));
         DispenserBlock.registerBehavior(this, DISPENSE_ITEM_BEHAVIOR);
     }
 
